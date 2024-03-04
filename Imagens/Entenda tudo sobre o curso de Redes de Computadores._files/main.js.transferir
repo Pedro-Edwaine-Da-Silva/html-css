@@ -1,0 +1,395 @@
+var extractLiOverCount = function extractLiOverCount(count, ulTarget) {
+    var newUl = document.createElement('ul');
+    newUl.classList.add('ul-menu-collapsed');
+    Object.assign([], ulTarget.children).forEach(function (e, i) {
+        if (i > count - 1 && e.classList.contains('menu-item')) {
+            newUl.appendChild(e.cloneNode(true));
+
+            //se o count for setado como 0 todos elementos vão para uma nova ul
+            //prorem sem haver exclusão
+            if (count) {
+                e.remove();
+            };
+        }
+    });
+    return newUl;
+};
+var buildLiWithIcon = function buildLiWithIcon() {
+    var liIconForMoreContent = document.createElement('li');
+    liIconForMoreContent.classList.add('menu-collapsed', 'desktop');
+    liIconForMoreContent.innerHTML = '<i class="fas awesome-menu"></i>';
+    liIconForMoreContent.children[0].addEventListener('click', function (e) {
+        e.target.classList.toggle('has-shown');
+        Object.assign([], e.target.parentElement.querySelectorAll('ul')).forEach(function (ul) {
+            return ul.classList.toggle('show');
+        });
+    });
+    return liIconForMoreContent;
+};
+
+//Main - function that calls the other
+var buildMenus = function buildMenus() {
+    var arrUlMenu = Object.assign([], document.querySelectorAll('ul.menu'));
+
+    var arrUlMenuToMobile = Object.assign([], document.querySelectorAll('header ul.menu'));
+    var btnTarget = document.getElementById('btn-menu-mobile-1');
+
+    var NumMaxElement = 5;
+
+    btnTarget.addEventListener('click', function (e) {
+        e.target.classList.toggle('has-shown');
+        Object.assign([], e.target.parentElement.querySelectorAll('ul')).forEach(function (ul) {
+            return ul.classList.toggle('show');
+        });
+    });
+
+    arrUlMenuToMobile.forEach(function (ul) {
+        var ulWithElementextracted = extractLiOverCount(0, ul);
+        btnTarget.parentElement.appendChild(ulWithElementextracted);
+    });
+
+    arrUlMenu.forEach(function (el) {
+        if (el.children.length > NumMaxElement) {
+            var ulWithElementextracted = extractLiOverCount(NumMaxElement, el);
+            el.appendChild(buildLiWithIcon());
+            el.lastElementChild.appendChild(ulWithElementextracted);
+        }
+    });
+};
+
+document.addEventListener('DOMContentLoaded', function (e) {
+
+    /***********calls of function - START*************/
+
+    buildMenus();
+});
+var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
+
+var showArticlePaginationControl = function showArticlePaginationControl(elm) {
+  var dataset = elm.dataset;
+  if (+dataset.currentpage < +dataset.maxpages) {
+    elm.classList.add('show');
+  } else {
+    elm.classList.remove('show');
+  }
+};
+
+var getMoreArticles = function getMoreArticles(e) {
+  var dataset = e.target.dataset;
+  var offset = +dataset.currentpage * 10;
+  var type = dataset.type || false;
+  fetch('https://impacta.com.br/blog/wp-json/api/v1/post?offset=' + offset + (type ? '&type=' + type : '')).then(function (r) {
+    return r.json();
+  }).then(function (data) {
+    data.forEach(function (dataArticle) {
+      return simpleArticle(dataArticle, e.target);
+    });
+    dataset.currentpage++;
+    showArticlePaginationControl(e.target);
+  });
+};
+
+var simpleArticle = function simpleArticle(dataArticle, elm) {
+  var index = 0;
+  if (window.matchMedia("(min-width: 760px)").matches && dataArticle.img[1].length) {
+    index = 1;
+  }
+
+  var _dataArticle$img$inde = _slicedToArray(dataArticle.img[index], 3),
+      _dataArticle$img$inde2 = _dataArticle$img$inde[0],
+      url = _dataArticle$img$inde2 === undefined ? '' : _dataArticle$img$inde2,
+      _dataArticle$img$inde3 = _dataArticle$img$inde[1],
+      width = _dataArticle$img$inde3 === undefined ? 0 : _dataArticle$img$inde3,
+      _dataArticle$img$inde4 = _dataArticle$img$inde[2],
+      heigth = _dataArticle$img$inde4 === undefined ? 1 : _dataArticle$img$inde4;
+
+  var escale = (width / heigth).toFixed(2);
+
+  var article = document.createElement('article');
+  article.innerHTML = '\n    <a href="' + dataArticle.link + '" class="link-single-article">\n    <div class="thumbnail-container col">\n            <img src="' + url + '"  onerror="this.style.display=\'none\'" style="left: calc( (-100% + ' + escale + 'em) / -2 );" alt="capa do artigo ' + dataArticle.title + '">\n    </div>\n    <div class="article-resume col-r">\n            <h1>' + dataArticle.title + '</h1>\n            <p>\n            ' + dataArticle.category + ' | <time datetime="20' + dataArticle.date.split('/').reverse().join('/') + '"> ' + dataArticle.date + '</time>\n            </p>\n            <p class="post-description">' + dataArticle.short_description + '</p>\n            <a href="' + dataArticle.link + '" class="btn btn-details" rel="nofollow">Leia mais</a>\n    </div>\n    </a>\n  ';
+  elm.parentNode.insertAdjacentElement('beforebegin', article);
+};
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  Object.assign([], document.getElementsByClassName('pagination-post-btn')).forEach(function (e) {
+    e.addEventListener('click', getMoreArticles);
+    showArticlePaginationControl(e);
+  });
+});
+var showMore = function showMore(e) {
+  e.preventDefault();
+  //show other btn - to hide comments
+  var otherBtn = e.target.parentElement.querySelector(e.target.tagName + ' ~ ' + e.target.tagName);
+  otherBtn.style.display = 'initial';
+  var target = e.target.dataset.target;
+  var count = 7;
+  //debugger
+  Object.assign([], document.querySelectorAll('#' + target + ' > li')).forEach(function (elm) {
+    if (getComputedStyle(elm).display === 'none' && count) {
+      elm.classList.add('show');
+      count--;
+    }
+  });
+};
+var hideAlmostEveryone = function hideAlmostEveryone(e) {
+  e.preventDefault();
+  var target = e.target.dataset.target;
+
+  Object.assign([], document.querySelectorAll('#' + target + ' > li')).forEach(function (elm) {
+    return elm.classList.remove('show');
+  });
+};
+document.addEventListener('DOMContentLoaded', function (e) {
+  Object.assign([], document.querySelectorAll('#comments .older')).forEach(function (e) {
+    return e.addEventListener('click', showMore);
+  });
+  Object.assign([], document.querySelectorAll('#comments .newer')).forEach(function (e) {
+    return e.addEventListener('click', hideAlmostEveryone);
+  });
+});
+var requestChat = function requestChat(e) {
+  e.currentTarget.classList.add('loading');
+  var lc = document.createElement('script');lc.type = 'text/javascript';lc.async = true;
+  lc.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'cdn.livechatinc.com/tracking.js';
+  var s = document.getElementsByTagName('script')[0];s.parentNode.insertBefore(lc, s);
+  checkWidgetIsRendered(e.currentTarget);
+};
+
+var checkWidgetIsRendered = function checkWidgetIsRendered(elm) {
+  console.log('isso', elm);
+  if (document.querySelector('iframe[src^="https://secure.livechatinc.com"')) {
+    elm.style.display = 'none';
+  } else {
+    window.setTimeout(checkWidgetIsRendered, 800, elm);
+  }
+};
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  Object.assign([], document.getElementsByClassName('active-chat-btn soft-shadow')).forEach(function (btn) {
+    return btn.addEventListener('click', requestChat);
+  });
+});
+var maximizeInputSearchArea = function maximizeInputSearchArea(e) {
+  document.querySelector('header ul.card-social-and-search-itens').classList.add('maxmize-form');
+};
+
+var minimizeInputSearchArea = function minimizeInputSearchArea(e) {
+  if (document.getElementById('search_other_posts').value == '') {
+    document.querySelector('header ul.card-social-and-search-itens').classList.remove('maxmize-form');
+  }
+};
+// const minimizeInputSearchArea = (e) => {
+//   const isTimeOfMinimize = ( time) => setTimeout( () => {
+//     let target = document.querySelector( 'header ul.card-social-and-search-itens' );
+//     if( time >= 5){
+//       target.classList.remove('maxmize-form');
+//     } else if( target.value){
+//       time++;
+//       isTimeOfMinimize( time)
+//     } else {
+//       target.classList.remove('maxmize-form');
+//     }
+//   },2500);
+//   isTimeOfMinimize();
+// }
+
+/*document.addEventListener('DOMContentLoaded', (e) => {
+  document.getElementById('search_other_posts').addEventListener( 'focus', maximizeInputSearchArea);
+  document.getElementById('search_other_posts').addEventListener( 'blur', minimizeInputSearchArea);
+});*/
+
+window.addEventListener('load', function (event) {
+  document.getElementById('search_other_posts').addEventListener('focus', maximizeInputSearchArea);
+  document.getElementById('search_other_posts').addEventListener('blur', minimizeInputSearchArea);
+});
+var setClass = function setClass(elemTarget) {
+  var flag = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
+  var className = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'ativo';
+
+  switch (flag) {
+    case 1:
+      elemTarget.classList.add(className);
+      break;
+    case 0:
+      elemTarget.classList.remove(className);
+      break;
+    default:
+      elemTarget.classList.toggle(className);
+  }
+};
+var actionsOfUI = function actionsOfUI(valA, valB, valC, valD, valE, functions) {
+  var cod = '' + +valA + +valB + +valC + +valD + +valE;
+  //debugger
+  switch (cod) {
+    case '00001':
+      functions[0]();
+      break;
+    case '11000':
+    case '11010':
+    case '11001':
+      functions[1]();
+      break;
+    case '11100':
+      functions[2]();
+      break;
+    case '11110':
+      functions[2]();
+      break;
+    case '11111':
+      functions[3]();
+      break;
+  }
+};
+
+var switchActionByStatus = function switchActionByStatus(btnOrInput) {
+  var btnTarget = document.getElementById('btn-search-post-mobile');
+  var inputTarget = document.getElementById('search_other_posts_mobile');
+
+  var beginFill = function beginFill() {
+    setClass(inputTarget, 1);
+    setClass(btnTarget, 1);
+    inputTarget.focus();
+  };
+  var toInitial = function toInitial() {
+    setClass(inputTarget, 0, 'ativo');
+    setClass(btnTarget, 0, 'ativo');
+  };
+  var toInProgress = function toInProgress() {
+    setClass(inputTarget, 1);
+    setClass(btnTarget, 1, 'done-to-send');
+  };
+  var sendQuery = function sendQuery() {
+    var urlAtual = window.location.href;
+    var valueSearch = inputTarget.value;
+    window.location.href = urlAtual + '?s=' + escape(valueSearch);
+  };
+
+  var btnIsVisible = btnTarget.classList.contains('ativo');
+  var inputIsVisible = inputTarget.classList.contains('ativo');
+  var inputIsFilled = inputTarget.value ? true : false;
+  var btnDoneToSend = btnTarget.classList.contains('done-to-send');
+
+  actionsOfUI(btnIsVisible, inputIsVisible, inputIsFilled, btnDoneToSend, btnOrInput, [beginFill, toInitial, toInProgress, sendQuery]);
+};
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  document.getElementById('btn-search-post-mobile').addEventListener('click', function () {
+    return switchActionByStatus(1);
+  });
+  document.getElementById('search_other_posts_mobile').addEventListener('input', function () {
+    return switchActionByStatus(0);
+  });
+  //document.getElementById('search_other_posts_mobile').parentElement.addEventListener( 'mouseover', switchActionByStatus);
+});
+var URL_POST = 'https://www.impacta.com.br/blog/wp-content/themes/impacta_theme/send.php';
+var get_parent = function get_parent(tagTarget, child) {
+  var parent = child.parentElement || null;
+  if (parent.tagName.toLowerCase() === tagTarget) return parent;else return get_parent(tagTarget, parent);
+};
+
+var prepareToSendForm = function prepareToSendForm(e) {
+  var btn = e.target;
+  var form = get_parent('form', btn);
+  var isValid = true;
+  var data = '';
+  var toggleLoading = function toggleLoading() {
+    return btn.classList.toggle('loading');
+  };
+  var clearForm = function clearForm() {
+    return form.reset();
+  };
+
+  Object.assign([], form.querySelectorAll('input')).forEach(function (input) {
+    if (input.classList.toString().match('erro') || !input.value) return isValid = false;
+  });
+
+  data = Object.assign([], form.querySelectorAll('input')).reduce(function (a, e) {
+    return a += e.name + '=' + e.value + '&';
+  }, '');
+
+  if (isValid) {
+    toggleLoading();
+    sendForm(data, clearForm, toggleLoading);
+  }
+};
+
+var sendForm = function sendForm(data) {
+  var successCallback = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : function () {
+    return null;
+  };
+  var finallyCallback = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : function () {
+    return null;
+  };
+
+  var myHeaders = new Headers({
+    'Content-Type': 'application/x-www-form-urlencoded'
+  });
+  fetch(URL_POST, {
+    method: 'POST',
+    headers: myHeaders,
+    body: data
+  }).then(function (r) {
+    return r.json();
+  }).then(function (r) {
+    if (r.success) {
+      successCallback();
+      Swal.fire('Inscrição Concluída', 'Parabéns, em breve lhe enviaremos conteúdos inéditos', 'success');
+      //ga("send", "event", "Newsletter Blog", "Clique", "Formulario")
+
+      ga("send", "event", "Conversão", "Cadastro", "Assinatura News");
+    } else {
+      throw r.msg;
+    }
+  }).catch(function (error) {
+    Swal.fire('Falha na inscrição', 'Por favor tente novamente mais tarde', 'error');
+  }).finally(finallyCallback);
+};
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  Object.assign([], document.getElementsByClassName('submit-newsletter-acc')).forEach(function (btn) {
+    return btn.addEventListener('click', prepareToSendForm);
+  });
+});
+var validateInputForm = function validateInputForm(e) {
+  var input = e.target;
+  var value = input.value;
+  var typeValidation = input.classList.toString().match(/validate-([\w|\d]+)/)[1];
+  var msg = '';
+
+  if (input.required && !value) msg = 'campo não preenchido';else if (!testRegex(value, typeValidation)) msg = typeValidation + ' inv\xE1lido';
+
+  if (msg) {
+    input.classList.add('error');
+    writeMessage(msg, input);
+  } else {
+    input.classList.remove('error');
+  }
+};
+
+var testRegex = function testRegex(value, type) {
+  var regex = '';
+  switch (type) {
+    case 'email':
+      regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
+      break;
+  }
+  return !!value.toString().match(regex);
+};
+
+var writeMessage = function writeMessage(msg, elm) {
+  var display = elm.parentElement.getElementsByClassName('display-error')[0];
+  if (display) {
+    display.textContent = msg;
+  } else {
+    var span = document.createElement('span');
+    span.classList.add('display-error');
+    elm.insertAdjacentElement('afterend', span);
+    writeMessage(msg, elm);
+  }
+};
+
+document.addEventListener('DOMContentLoaded', function (e) {
+  Object.assign([], document.querySelectorAll('input[class^="validate-"]')).forEach(function (input) {
+    return input.addEventListener('blur', validateInputForm);
+  });
+});

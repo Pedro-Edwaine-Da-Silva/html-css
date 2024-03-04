@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../exe006/favicon.ico" type="image/x-icon">
+    <title>Mídia-Vídeos</title>
+</head>
+<body>
+    <h1>Inserindo vídeos hospedados localmente</h1>
+    <p>Este vídeo esta hospedado no nosso próprio servidor.</p>
+    <p>Forma simples de exibir um vídeo com um único formato disponível, não aconselhavel por causa de compatibilidade.</p>
+    <video src="midia/meu-videop4.mp4" width="560px" controls poster="imagens/limoes-capa.png"></video>
+    <p>Exibindo de forma correcta</p>
+    <video width="560px" poster="imagens/limoes-capa.png" controls>
+        <source src="midia/meu-videop4.mp4" type="video/mp4">
+        <source src="midia/meu-video4v.m4v" type="video/mp4">
+        <source src="midia/meu-videowb.webm" type="video/webm">
+        <source src="midia/meu-video.ogv" type="video/ogg">
+        <p>Infelizmente seu navegador não consegue reproduzir vídeo <a href="midia/meu-videop4.mp4" type="video/mp4" download="meu-videop4">clique aqui para download!</a></p>
+    </video>
+    <h1>Inserindo videos de servidores externos!</h1>
+    <iframe width="560" height="315" src="https://www.youtube.com/embed/FUhPEKsn8mM?si=EU9E9He4vCyAXwCf" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+</body>
+</html>

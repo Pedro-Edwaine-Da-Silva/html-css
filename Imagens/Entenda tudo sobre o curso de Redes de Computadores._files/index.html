@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<!-- saved from url=(0056)https://white-label-ads.voxus.tv/inte/index.html?by_id=2 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <script type="text/javascript">
+        let queryStringParams = QueryStringToJSON();
+
+        function getCookie(cname) {
+            let name = cname + "=";
+            let ca = document.cookie.split(';');
+            for(let i = 0; i <ca.length; i++) {
+                let c = ca[i];
+                while (c.charAt(0)==' ') {
+                    c = c.substring(1);
+                }
+
+                if (c.indexOf(name) == 0)
+                    return c.substring(name.length,c.length);
+            }
+
+            return "";
+        }
+
+        function setCookie(cname, cvalue, exdays) {
+            let d = new Date();
+            d.setTime(d.getTime() + (exdays*24*60*60*1000));
+            let expires = "expires="+ d.toUTCString();
+            let cookieString = cname + "=" + cvalue + "; " + expires + ";path=/;domain=.voxus.tv";
+            if (shouldSendSameSiteNone(window.navigator.userAgent))
+                cookieString += ';secure;SameSite=None';
+            document.cookie = cookieString;
+        }
+
+        function shouldSendSameSiteNone(useragent) {
+            return !isSameSiteNoneIncompatible(useragent);
+        }
+
+        // Classes of browsers known to be incompatible.
+        function isSameSiteNoneIncompatible(useragent) {
+            return hasWebKitSameSiteBug(useragent) ||
+                dropsUnrecognizedSameSiteCookies(useragent);
+        }
+
+        function hasWebKitSameSiteBug(useragent) {
+            return isIosVersion(12, useragent) ||
+                (isMacosxVersion(10, 14, useragent) &&
+                    (isSafari(useragent) || isMacEmbeddedBrowser(useragent)));
+        }
+
+        function dropsUnrecognizedSameSiteCookies(useragent) {
+            if (isUcBrowser(useragent)) {
+                return !isUcBrowserVersionAtLeast(12, 13, 2, useragent);
+            }
+            return isChromiumBased(useragent) &&
+                isChromiumVersionAtLeast(51, useragent) &&
+                !isChromiumVersionAtLeast(67, useragent);
+        }
+
+        // Regex parsing of User-Agent string. (See note above!)
+        function isIosVersion(major, useragent) {
+            const regex = /\(iP.+; CPU .*OS (\d+)[_\d]*.*\) AppleWebKit\//g;
+            // Extract digits from first capturing group.
+            const match = useragent.match(regex);
+            return match && match[0] == major;
+        }
+
+        function isMacosxVersion(major, minor, useragent) {
+            const regex = /\(Macintosh;.*Mac OS X (\d+)_(\d+)[_\d]*.*\) AppleWebKit\//g;
+            // Extract digits from first and second capturing groups.
+            const match = useragent.match(regex);
+            return match && (match[0] == major) &&
+                (match[1] == minor);
+        }
+
+        function isSafari(useragent) {
+            const safari_regex = /Version\/.* Safari\//g;
+            return safari_regex.test(useragent) &&
+                !isChromiumBased(useragent);
+        }
+
+        function isMacEmbeddedBrowser(useragent) {
+            const regex = /^Mozilla\/[\.\d]+ \(Macintosh;.*Mac OS X [_\d]+\) AppleWebKit\/[\.\d]+ \(KHTML, like Gecko\)$/g;
+            return regex.test(useragent);
+        }
+
+        function isChromiumBased(useragent) {
+            const regex = /Chrom(e|ium)/g;
+            return regex.test(useragent);
+        }
+
+        function isChromiumVersionAtLeast(major, useragent) {
+            const regex = /Chrom[^ \/]+\/(\d+)[\.\d]* /g;
+            // Extract digits from first capturing group.
+            const version = useragent.match(regex)[0];
+            return version >= major;
+        }
+
+        function isUcBrowser(useragent) {
+            const regex = /UCBrowser\//g;
+            return regex.test(useragent);
+        }
+
+        function isUcBrowserVersionAtLeast(major, minor, build, useragent) {
+            const regex = /UCBrowser\/(\d+)\.(\d+)\.(\d+)[\.\d]* /g;
+            // Extract digits from three capturing groups.
+            const major_version = useragent.match(regex)[0];
+            const minor_version = useragent.match(regex)[1];
+            const build_version = useragent.match(regex)[2];
+            if (major_version != major)
+                return major_version > major;
+            else if (minor_version != minor)
+                return minor_version > minor;
+            return build_version >= build;
+        }
+
+        function QueryStringToJSON() {
+            let e = decodeURIComponent(location.search).slice(1).split("&"),
+                t = {};
+
+            return e.forEach(function(e) {
+                e = e.split("="), t[e[0]] = decodeURIComponent(e[1] || "")
+            }), JSON.parse(JSON.stringify(t))
+        }
+
+        window.addEventListener('message', function(event) {
+            if(event.data.type !== 'st-ck')
+                return;
+
+            setCookie(event.data.ck_name, event.data.ck_value, parseFloat(event.data.ck_days));
+        });
+
+        setInterval(function () {
+            let dataExclude = getCookie('voxus-exclude') != '' ? "true" : "false";
+
+            parent.postMessage({type: 'voxus-exclude', exclude: dataExclude}, "*");
+            parent.postMessage({type: 'white_label_adseen',
+                has_seen_ad_1h: getCookie('wh_adseen_dbm_1h_' + queryStringParams.by_id) !== '',
+                segs_seen: getCookie('wh_sg_seen_' + queryStringParams.by_id),
+                has_seen_ad_24h: getCookie('wh_adseen_dbm_24h_' + queryStringParams.by_id) !== '',
+                has_seen_ad_72h: getCookie('wh_adseen_dbm_72h_' + queryStringParams.by_id)}, "*");
+        }, 1000);
+    </script>
+</head>
+<body>
+</body></html>

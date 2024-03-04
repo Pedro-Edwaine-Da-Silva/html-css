@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../exe006/favicon.ico" type="image/x-icon">
+    <title>Mídias dinâmicas</title>
+</head>
+<body>
+    <h2>Imagens Dinâmicas</h2>
+    <p>Para criar imagens dinamicas usados a tag &lt;picture&gt; e dentro dela a tag &lt;img&gt; e a tag &lt;source&gt; com alguns atributos como 
+        <dl>
+            <dt>media</dt>
+            <dd>Usado para definir o tamanho maximo a ser considerado para carregar a imagem no atributo srscet</dd>
+            <dt>Type</dt>
+            <dd>Indica o media type que vai ser usado</dd>
+            <dt>Srscet</dt>
+            <dd>Vai configurar o nome dá imagem a ser carregado quando o tamanho for atingido</dd>
+        </dl>
+    </p>
+    <picture>
+        <source media="(max-width:730px)" srcset="foto-p.png" type="image/png">
+        <source media="(max-width: 1050px)" srcset="foto-m.png" type="image/png">
+        <img src="foto-g.png" alt="Exemplo de imaem flexível">
+    </picture>
+    <h2>Adicionando musícas!</h2>
+    <p>Aprendendo a reproduzir audio em HTML5</p>
+    <audio src="midia/hymn-for-weekend.mp3" controls autoplay></audio>
+    <p>Outro exemplo </p>
+    <audio preload="metadata" autoplay controls loop>
+        <source src="midia/guanacast-33.mp3" type="audio/mp3">
+        <source src="midia/guanacast-33.ogg" type="audio/ogg">
+        <source src="midia/guanacast-33.wav" type="audio/wav">
+        <p>Infelizmente seu navegador não consegue reproduizir áudio <a href="midia/guanacast-33.mp3" type="audio/mpeg">clique aqui</a></p>
+    </audio>
+</body>
+</html>

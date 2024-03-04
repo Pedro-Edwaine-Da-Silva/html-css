@@ -1,0 +1,382 @@
+let externalMessagesVars = {
+    dataExclude: true,
+    adseen24h: false,
+    segs_seen: '0'
+};
+let cm = 'cpm';
+let cn = 'campaign_2_2';
+let cs = 'imastersads';
+let byId = 2;
+let fromOther = isThirdParty();
+//let conversionPages = [''];
+let clientLastUrl = '';
+let whApiHost = 'https://creative-data-api.voxus.com.br/';
+let clientDomain = 'impacta.com.br'
+let DS_ID = 3;
+let DS_DAYS = 30;
+
+let mainProcess = null;
+
+if (document.readyState !== 'loading')
+    startProcess();
+else
+    document.addEventListener('DOMContentLoaded', startProcess);
+
+function startProcess() {
+    loadDependencies(initializeMain);
+}
+
+function initializeMain() {
+    mainProcess = setInterval(function () {
+        main()
+    }, 2000);
+}
+
+
+function main() {
+    if(fromOther || externalMessagesVars.dataExclude) {
+        clearInterval(mainProcess);
+        return;
+    }
+
+    checkPageView();
+
+    if(hasClientUrlChanged()) {
+        updateClientUrl();
+        //checkConversion();
+    }
+}
+
+function checkConversion() {
+    if(!hasConverted())
+        return;
+
+    fireDataAPIConversion();
+    setCookie(getWhCookieName('converted_' + byId), 'true', (1 / 24));
+}
+
+function checkPageView() {
+    if(!isEmpty(getCookie(getWhCookieName('ignore_full_ga_' + byId))))
+        return;
+
+    fireAnalyticsSecondaryDimensionHit();
+    setCookie(getWhCookieName('ignore_full_ga_' + byId), 'true', (5 / 1440)) // 5 minutes
+
+    if(!externalMessagesVars.adseen24h)
+        //|| !isEmpty(getCookie(getWhCookieName('converted_' + byId))
+        return;
+
+    fireAnalyticsHit();
+}
+
+function fireAnalyticsSecondaryDimensionHit() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', whApiHost + 'crt/imp/' + byId + '/segments')
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState != 4 || xhr.status != 200)
+            return;
+
+        let response = JSON.parse(xhr.responseText);
+
+        let labelSegments = [];
+        let dateNow = new Date();
+
+        for (let i in response) {
+            let dateImpact = new Date(response[i]['last_impression']);
+            let diffTime = Math.abs(dateNow - dateImpact);
+            let diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+            if(diffDays > DS_DAYS)
+                continue;
+
+            labelSegments.push(response[i]['segment_id']);
+        }
+
+        if(labelSegments.length > 0) {
+            let sender = isEmpty(ga) ? null : ga;
+            let splitSegments = labelSegments.join(',')
+            let data = {};
+
+            data['dimension' + DS_ID] = splitSegments;
+            data['nonInteraction'] = 1;
+
+            for (let i in sender.getAll()) {
+                sender.getAll()[i].send('event', 'category', 'action', data);
+            }
+        }
+    }
+}
+
+function fireAnalyticsHit() {
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', whApiHost + 'crt/cnv/' + byId, true);
+    xhr.send();
+
+    xhr.onreadystatechange = function() {
+        if(xhr.readyState != 4 || xhr.status != 200)
+            return;
+
+        let response = JSON.parse(xhr.responseText);
+
+        if(response.cv)
+            return;
+
+        let sender = isEmpty(ga) ? null : ga;
+
+        for (let i in sender.getAll()) {
+            sender.getAll()[i].set('campaignSource', cs);
+            sender.getAll()[i].set('campaignMedium', cm);
+            sender.getAll()[i].set('campaignName', cn);
+            sender.getAll()[i].send('pageview');
+        }
+    };
+}
+
+function fireDataAPIConversion() {
+    let segsSeen = externalMessagesVars.segs_seen;
+
+    let xhr = new XMLHttpRequest();
+    xhr.open('POST', whApiHost + 'crt/cnv/' + byId, true);
+    xhr.setRequestHeader('Content-Type', 'application/json');
+    xhr.send(JSON.stringify({
+        'sg': isEmpty(segsSeen) ? -1 : segsSeen
+    }));
+}
+
+function hasConverted() {
+    let rawPath = getPathFromUrl(window.location.href);
+
+    for (let i in conversionPages) {
+        if (rawPath.indexOf(conversionPages[i]) !== -1)
+            return true;
+    }
+
+    return false;
+}
+
+function isThirdParty() {
+    if(!isEmpty(getCookie(getWhCookieName('ignore_oth_' + byId))))
+        return true;
+
+    let thirdPartyParams = ['utm_source', 'gclid', 'fbclid'];
+    let response = false;
+    for (let i in thirdPartyParams) {
+        let paramValue = getParameterByNameVx__(thirdPartyParams[i]);
+
+        if(paramValue != '' && paramValue != cs) {
+            response = true;
+            break;
+        }
+    }
+
+    if(response && isEmpty(getCookie(getWhCookieName('ignore_oth_' + byId))))
+        setCookie(getWhCookieName('ignore_oth_' + byId), 'true', 1);
+
+    return response;
+}
+
+function getUpdatedClientUrl() {
+    return window.location.href.toLowerCase().replace("#", "");
+}
+
+function hasClientUrlChanged() {
+    return getUpdatedClientUrl() != clientLastUrl;
+}
+
+function updateClientUrl() {
+    clientLastUrl = getUpdatedClientUrl();
+}
+
+
+function getParameterByNameVx__(name) {
+    name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+    let regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+        results = regex.exec(location.search);
+
+    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function getPathFromUrl(url) {
+    return url.split(/[?#]/)[0];
+}
+
+function getCookie(cname) {
+    let name = cname + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i <ca.length; i++) {
+        let c = ca[i];
+        while (c.charAt(0)==' ') {
+            c = c.substring(1);
+        }
+
+        if (c.indexOf(name) == 0)
+            return c.substring(name.length,c.length);
+    }
+
+    return "";
+}
+
+function setCookie(cname, cvalue, exdays) {
+    let d = new Date();
+
+    d.setTime(d.getTime() + (exdays*24*60*60*1000));
+
+    let expires = "expires="+ d.toUTCString();
+    let cookieString = cname + "=" + cvalue + "; " + expires + ";path=/;domain=" + clientDomain;
+
+    if (shouldSendSameSiteNone(window.navigator.userAgent))
+        cookieString += ';secure;SameSite=None';
+
+    document.cookie = cookieString;
+}
+
+function getWhCookieName(name) {
+    return 'wh_' + name;
+}
+
+function shouldSendSameSiteNone(useragent) {
+    return !isSameSiteNoneIncompatible(useragent);
+}
+
+// Classes of browsers known to be incompatible.
+function isSameSiteNoneIncompatible(useragent) {
+    return hasWebKitSameSiteBug(useragent) ||
+        dropsUnrecognizedSameSiteCookies(useragent);
+}
+
+function hasWebKitSameSiteBug(useragent) {
+    return isIosVersion(12, useragent) ||
+        (isMacosxVersion(10, 14, useragent) &&
+            (isSafari(useragent) || isMacEmbeddedBrowser(useragent)));
+}
+
+function dropsUnrecognizedSameSiteCookies(useragent) {
+    if (isUcBrowser(useragent)) {
+        return !isUcBrowserVersionAtLeast(12, 13, 2, useragent);
+    }
+
+    return isChromiumBased(useragent) &&
+        isChromiumVersionAtLeast(51, useragent) &&
+        !isChromiumVersionAtLeast(67, useragent);
+}
+
+// Regex parsing of User-Agent string. (See note above!)
+function isIosVersion(major, useragent) {
+    const regex = /\(iP.+; CPU .*OS (\d+)[_\d]*.*\) AppleWebKit\//g;
+    // Extract digits from first capturing group.
+    const match = useragent.match(regex);
+    return match && match[0] == major;
+}
+
+function isMacosxVersion(major, minor, useragent) {
+    const regex = /\(Macintosh;.*Mac OS X (\d+)_(\d+)[_\d]*.*\) AppleWebKit\//g;
+    // Extract digits from first and second capturing groups.
+    const match = useragent.match(regex);
+    return match && (match[0] == major) &&
+        (match[1] == minor);
+}
+
+function isSafari(useragent) {
+    const safari_regex = /Version\/.* Safari\//g;
+    return safari_regex.test(useragent) &&
+        !isChromiumBased(useragent);
+}
+
+function isMacEmbeddedBrowser(useragent) {
+    const regex = /^Mozilla\/[\.\d]+ \(Macintosh;.*Mac OS X [_\d]+\) AppleWebKit\/[\.\d]+ \(KHTML, like Gecko\)$/g;
+    return regex.test(useragent);
+}
+
+function isChromiumBased(useragent) {
+    const regex = /Chrom(e|ium)/g;
+    return regex.test(useragent);
+}
+
+function isChromiumVersionAtLeast(major, useragent) {
+    const regex = /Chrom[^ \/]+\/(\d+)[\.\d]* /g;
+    // Extract digits from first capturing group.
+    const version = useragent.match(regex)[0];
+    return version >= major;
+}
+
+function isUcBrowser(useragent) {
+    const regex = /UCBrowser\//g;
+    return regex.test(useragent);
+}
+
+function isUcBrowserVersionAtLeast(major, minor, build, useragent) {
+    const regex = /UCBrowser\/(\d+)\.(\d+)\.(\d+)[\.\d]* /g;
+    // Extract digits from three capturing groups.
+    const major_version = useragent.match(regex)[0];
+    const minor_version = useragent.match(regex)[1];
+    const build_version = useragent.match(regex)[2];
+
+    if (major_version != major)
+        return major_version > major;
+    else if (minor_version != minor)
+        return minor_version > minor;
+
+    return build_version >= build;
+}
+
+function isEmpty(value) {
+    return value === 'undefined' || value == undefined || value == '' || value === null || value === 'null';
+}
+
+function loadDependencies(completeCallBack) {
+    loadListeners();
+
+    let script = document.createElement('iframe');
+    script.src = '//white-label-ads.voxus.tv/inte/index.html?by_id=' + byId;
+    script.id = 'inte_frame';
+    script.frameborder = 0;
+    script.async = true;
+    script.width = script.height = 1;
+    script.style = 'display:none;visibility:hidden';
+
+    let node = document.getElementsByTagName('body')[0].lastChild;
+    node.parentNode.insertBefore(script, node);
+
+    function loadListeners() {
+        window.addEventListener('message', function(event) {
+            let shouldCallCompleteCallbackOnMessageRead = handleExternalMessages(event);
+
+            if(shouldCallCompleteCallbackOnMessageRead)
+                completeCallBack();
+        });
+    }
+}
+
+function handleExternalMessages(listenerEvent) {
+    switch(listenerEvent.data.type) {
+        case 'voxus-exclude':
+            return handleDataExcludeMessage(listenerEvent.data);
+        case 'white_label_adseen':
+            return handleAdSeenMessage(listenerEvent.data);
+        default:
+            return false;
+    }
+
+    return false;
+}
+
+function handleDataExcludeMessage(data) {
+    let newDataExclude = data.exclude === 'true';
+
+    if(newDataExclude != externalMessagesVars.dataExclude) {
+        externalMessagesVars.dataExclude = newDataExclude;
+
+        return true;
+    }
+
+    return false;
+}
+
+function handleAdSeenMessage(data) {
+    externalMessagesVars.segs_seen = data.segs_seen;
+    externalMessagesVars.adseen24h = data.has_seen_ad_24h;
+
+    return false;
+}
