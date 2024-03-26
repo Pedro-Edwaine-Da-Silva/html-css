@@ -1,4 +1,55 @@
 @charset "UTF-8";
-body{
-    background-color: brown;
+
+*{
+    margin: 0px;
+    padding: 0px;
+}
+html, body{
+    min-height: 100vh;
+    background-color: darkgray;
+
+}
+header{
+    background-color: black;
+    color: white;
+    text-align: center;
+}
+header> h1{
+    padding-top: 50px;
+    /*Todas as letras maisculas:text-transform: uppercase;*/
+    font-variant: small-caps; /* Transformar as letras em maiusculas diferenciando a 1 pelo tamanho */
+
+}
+header> p{
+    padding-bottom: 50px;
+}
+.normal{
+    background-color: white;
+    color: black;
+}
+section{/*para criar o efeito paralax é importante adicionar o espaçamento aqui entre as sections e para isso usou-se o padding top e bottom de 10% a vh*/
+    padding: 10vh 0vh 10vh 30px;
+    line-height: 2em;/* espaçamento entre as linhas*/
+}
+.imagem{
+    background-color: rgb(51, 51, 51);
+    color: white;
+}
+.imagem> p{
+    background-color: black;
+    width: 400px;
+}
+a{
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+}
+a:hover{
+    text-decoration: underline;
+}
+footer{
+    background-color: black;
+    color: white;
+    text-align: center;
+    padding: 10px;
 }
