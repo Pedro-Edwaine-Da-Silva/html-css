@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tabelas</title>
+    <style>
+        body{
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        table{
+            width: 500px;
+            border-collapse: collapse;
+        }
+        thead, tfoot{
+            background-color: grey;
+            color: white;
+        }
+        td, th{
+            border:1px solid black;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Uso de tabelas grandes</h1>
+    <!-- 
+        Anatomia de tabelas grandes
+        Table 
+            Thead
+                TR, TD, TM
+            TBody
+                TR, TD, TM
+            TFoot
+                TR, TD, TM
+     -->
+     <table>
+        <thead>
+            <th scope="col">Número</th>
+            <th scope="col">Estado</th>
+            <th scope="col" style="width: 50px;">População</th>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1</td><td>Cazenga</td><td>500000</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Viana</td><td>1000000</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Luanda</td><td>400000</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Cacuaco</td><td>700000</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td>5</td><th scope="row">Total de habitantes</th><td>2600000</td>
+            </tr>
+        </tfoot>
+     </table>
+</body>
+</body>
+</html>
