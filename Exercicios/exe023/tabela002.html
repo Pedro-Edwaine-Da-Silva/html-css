@@ -8,9 +8,22 @@
         body{
             font-family: Arial, Helvetica, sans-serif;
         }
+        caption{
+            background-color: lightgray;
+            font-size: 1.5em;
+            font-weight: bolder;
+            padding: 10px;
+        }
         table{
+            position: relative;
             width: 500px;
             border-collapse: collapse;
+        }
+        /* Para fazer com que o cabeçalho fique fixo independentemente dos dados da tabela 1º precisamos fazer com que o elemento table tenha um position: relative e o elemento thead da tabela tenha um position: absolute e ápos isso xonfigurar o tamanho da tabela com a propriedade top:0x;*/
+        thead> tr> th{
+            position: sticky;
+            top: -1px;
+            background-color: #554b4b;
         }
         thead, tfoot{
             background-color: grey;
@@ -19,6 +32,10 @@
         td, th{
             border:1px solid black;
             padding: 10px;
+        }
+        tbody> tr:nth-child(2n)/*Pseudo-classe utilizada para colocar efetio zebrado na tabela e a vai variar de 2 em 2... Também pode ser usado odd-ímpa r== 2n even-par== 2n-1
+        */{
+            background-color: lightgray;
         }
     </style>
 </head>
@@ -35,12 +52,87 @@
                 TR, TD, TM
      -->
      <table>
+        <caption>Populaçao Municipal</caption>
         <thead>
-            <th scope="col">Número</th>
-            <th scope="col">Estado</th>
-            <th scope="col" style="width: 50px;">População</th>
+            <tr>
+                <th scope="col">Número</th>
+                <th scope="col">Estado</th>
+                <th scope="col" style="width: 50px;">População</th>
+            </tr>
         </thead>
         <tbody>
+            <tr>
+                <td>1</td><td>Cazenga</td><td>500000</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Viana</td><td>1000000</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Luanda</td><td>400000</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Cacuaco</td><td>700000</td>
+            </tr>
+            <tr>
+                <td>1</td><td>Cazenga</td><td>500000</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Viana</td><td>1000000</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Luanda</td><td>400000</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Cacuaco</td><td>700000</td>
+            </tr>
+            <tr>
+                <td>1</td><td>Cazenga</td><td>500000</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Viana</td><td>1000000</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Luanda</td><td>400000</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Cacuaco</td><td>700000</td>
+            </tr>
+            <tr>
+                <td>1</td><td>Cazenga</td><td>500000</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Viana</td><td>1000000</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Luanda</td><td>400000</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Cacuaco</td><td>700000</td>
+            </tr>
+            <tr>
+                <td>1</td><td>Cazenga</td><td>500000</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Viana</td><td>1000000</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Luanda</td><td>400000</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Cacuaco</td><td>700000</td>
+            </tr>
+            <tr>
+                <td>1</td><td>Cazenga</td><td>500000</td>
+            </tr>
+            <tr>
+                <td>2</td><td>Viana</td><td>1000000</td>
+            </tr>
+            <tr>
+                <td>3</td><td>Luanda</td><td>400000</td>
+            </tr>
+            <tr>
+                <td>4</td><td>Cacuaco</td><td>700000</td>
+            </tr>
             <tr>
                 <td>1</td><td>Cazenga</td><td>500000</td>
             </tr>
@@ -60,6 +152,14 @@
             </tr>
         </tfoot>
      </table>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
+     <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus placeat saepe dolor eaque hic corrupti unde cum repudiandae facere eveniet, ex sit earum ad pariatur quaerat architecto! Autem, nulla optio. Lorem ipsum dolor sit amet consectetur adipisicing elit. Architecto incidunt, laudantium ipsam accusamus expedita consequuntur culpa impedit unde, totam quia voluptatem neque, repellendus cum tempore maxime natus magnam quas assumenda. Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestiae in iure modi laboriosam, exercitationem nostrum quo ut, totam aspernatur harum aperiam facere corporis tenetur laborum explicabo fugiat, labore officiis asperiores. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eos ratione maxime earum, corrupti aut, nihil dicta velit nulla laboriosam minus itaque laudantium ipsam incidunt saepe temporibus accusamus labore nisi in. Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quaerat voluptatum beatae sed distinctio reprehenderit et fugit quas illum corrupti, repellat provident minima rem debitis ipsa! Dolores aliquam blanditiis earum animi.</p>
 </body>
 </body>
 </html>
