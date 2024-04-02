@@ -30,12 +30,12 @@
         </caption>
         <thead>
             <tr>
-                <th>Grupo</th><th>Nomes</th><th colspan="3">Filmes</th>
+                <th scope="col">Grupo</th><th scope="col">Nomes</th><th colspan="3" scope="colgroup">Filmes</th>
             </tr>
         </thead>
         <tbody>
             <tr>
-                <th rowspan="3" scope="row">Mulheres</th> <td>Ana Maria Santos</td><td>Alien</td><td>Rambo</td><td>Vingadores</td>
+                <th rowspan="3" scope="rowgroup">Mulheres</th> <td>Ana Maria Santos</td><td>Alien</td><td>Rambo</td><td>Vingadores</td>
             </tr>
             <tr>
                 <td>Beatriz Souza</td><td>Hulk</td><td>Inception</td><td>Batman</td>
@@ -44,7 +44,7 @@
                 <td>Claudia de Melo</td><td>Oblivion</td><td>Matrix</td><td>Big Hero</td>
             </tr>
             <tr>
-                <th rowspan="3" scope="row">Homens</th><td>Bruno Mendonça</td><td>Intocáveis</td><td>Amnésia</td><td>Gladiador</td>
+                <th rowspan="3" scope="rowgroup">Homens</th><td>Bruno Mendonça</td><td>Intocáveis</td><td>Amnésia</td><td>Gladiador</td>
             </tr>
             <tr>
                 <td>Daniel Lourenço</td><td>Wall-E</td><td>Oldboy</td><td>Dangal</td>
@@ -53,6 +53,11 @@
                 <td>Fabiano Mota</td><td>Stars Wars 5</td><td>Taxi Driver</td><td>Toy Story</td>
             </tr>
         </tbody>
+        <tfoot><!--Total apesar de estar mesclado  ele não vai forma um escopo de grupo deja linha ou coluna mas para definir o escopor precisamos avaliar o dado que está relacionado a ele que é o numero 10000que é apenas uma linha-->
+            <tr>
+                <th colspan="4" scope="row">Total</th><td>100000</td>
+            </tr>
+        </tfoot>
     </table>
 </body>
 </html>
