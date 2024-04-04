@@ -24,6 +24,7 @@
             --fontedestaque2: "Outfit", sans-serif;
         }
         main{
+            margin-top: 30px;
             font-family: var(--fontespadrao);
             background-color: var(--cor1);
             max-width: 600px;
@@ -53,6 +54,17 @@
         }
         .subt{
             font-family: var(--fontesdestaque1);
+        }
+        div#container{
+            overflow-x: auto;
+        }
+        table{
+            border-collapse: collapse;
+            width: 570px;
+        }
+        th, td{
+            border-bottom: 1px solid black;
+            padding: 10px;
         }
     </style>
 </head>
@@ -109,24 +121,26 @@
             <section>
                 <h2  class="subt">Nutrition</h2>
                 <p>The table below shows nutritional values per serving without the additional fillings.</p>
-                <table>
-                    <tr>
-                        <th>Calories</th>
-                        <td>277kcal</td>
-                    </tr>
-                    <tr>
-                        <th>Carbs</th>
-                        <td>0g</td>
-                    </tr>
-                    <tr>
-                        <th>Protein</th>
-                        <td>20g</td>
-                    </tr>
-                    <tr>
-                        <th>Fat</th>
-                        <td>22g</td>
-                    </tr>
-                </table>
+                <div id="container">
+                    <table>
+                        <tr>
+                            <th>Calories</th>
+                            <td>277kcal</td>
+                        </tr>
+                        <tr>
+                            <th>Carbs</th>
+                            <td>0g</td>
+                        </tr>
+                        <tr>
+                            <th>Protein</th>
+                            <td>20g</td>
+                        </tr>
+                        <tr>
+                            <th>Fat</th>
+                            <td>22g</td>
+                        </tr>
+                    </table>
+                </div>
             </section>
         </article>
     </main>
