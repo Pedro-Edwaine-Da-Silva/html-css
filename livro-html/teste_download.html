@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=a, initial-scale=1.0">
+    <title>Document</title>
+    <script src="js/jquery-3.7.1.js"></script>
+</head>
+<body>
+    <button id="download"><a href="" type="application/pdf">Baixar</a></button>
+</body>
+<script>
+    $('#download').on('click',function(){
+        var concordo=window.confirm("Deseja baixar o aplicativo?");
+        if(concordo){
+            window.location.href="a_garota_que_eu_quero_-_zusak__markus.pdf";
+            window.alert("Download em Andamento");
+        }
+        else{
+            window.alert("Download cancelado");
+        }
+    });
+</script>
+</html>
