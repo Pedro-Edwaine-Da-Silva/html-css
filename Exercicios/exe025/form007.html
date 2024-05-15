@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Exemplo de formulário!</h1>
+    <form action="cadastro.php" autocomplete="on" method="get">
+        <p>
+            <label for="iestados">Estados: </label>
+            <select name="estados" id="iestados">
+                <optgroup label="Região Norte">
+                    <option value="" selected>---Select Estados---</option>
+                    <option value="MG">Minas Gerais</option>
+                    <option value="SP">São Paulo</option>
+                    <option value="CB">Curitiba</option>
+                </optgroup>
+                <optgroup label="Região Sul">
+                    <option value="L">Luanda</option>
+                    <option value="BG">Benguela</option>
+                    <option value="MC">Moxico</option>
+                </optgroup>
+            </select>
+        </p>
+        <p>
+            <label for="iest">Estados definidos</label>
+            <input type="text" name="estadef" id="iest" list="estlis">
+            <datalist id="estlis">
+                <option value="KN">Kwanza Norte</option>
+                <option value="K">Kwanza Sul</option>
+                <option value="LB">Lubango</option>
+            </datalist>
+        </p>
+        <p>
+            <input type="submit" value="Enviar">
+            <input type="reset" value="Limpar">
+        </p>
+    </form>
+</body>
+</html>
