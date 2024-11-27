@@ -1,9 +1,17 @@
-<!DOCTYPE html>
+                    »»»«««<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Estudos de Iframe</title>
+    <style>
+        iframe{
+            width:700px ;
+            height: 200px;
+            border: 0px;
+        }
+    </style>
 </head>
 <body>
     <h1>Testando o uso de Iframes</h1>
@@ -11,9 +19,10 @@
         <iframe src="https://www.cursoemvideo.com/" frameborder="0" width="400px" height="200px" scolling="no"></iframe> 
         para aprender a progamar
     </p>
-    <p>O repositorio do edwaine
-        <iframe src="https://github.com/" frameborder="0" width="500px" height="200px"><a href="https://github.com/"></a></iframe>
-        tambem é bem legal
+    
+    <p>Iframe que vai carregar uma pagina dentro ou seja vai servir como destino para uma página acessado ao carregar em 
+        <a href="../exe012/index.html" target="iframe_destino">CLICA AQUI</a>
+        <iframe src="#" frameborder="0" title="Exemplo de Iframe como alvo para link" name="iframe_destino"></iframe>
     </p>
 </body>
 </html>
