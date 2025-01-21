@@ -12,7 +12,14 @@
             <legend>Dados Pessoais</legend>
             <p>
                 <label for="inome">Nome: </label>
-                <input type="text" name="nome" id="inome" required >
+                <input type="text" name="nome" id="inome" required autocomplete="additional-name">
+            </p>
+            <p>
+                <label for="imedia">Média</label>
+                <input type="number" name="media" id="imedia" required min="0" max="10" autocomplete="0 à 10" step="0.1">
+            </p>
+            <p>
+                <label for="iplectivo"></label>
             </p>
             <p>
                 <label for="iemail">Email: </label>
@@ -20,10 +27,18 @@
             </p>
             <p>
                 <label for="itelefone">Telefone: </label>
-                <input  name="telefone" id="itelefone" autocomplete="tel " pattern="^\d{4}-\d{3}-\d{4}$" required type="tel">
+                <input  name="telefone" id="itelefone" autocomplete="tel " pattern="" required type="tel">
+            </p>
+            <p>
+                <label for="ipass">  Senha   </label>
+                <input type="password" name="password" id="ipass" required autocomplete="current-password">
             </p>
             <p>
                 <input type="submit" value="Enviar">
+                <input type="reset" value="Limpar">
+            </p>
+            <p>
+                
             </p>
         </fieldset>
     </form>

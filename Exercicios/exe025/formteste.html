@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Revisão</title>
+    <style>
+        form{
+            width: 400px;
+            margin: 0 auto;
+            padding: 1px;
+            border: 1px solid #cc4;
+            border-radius: 1em;
+        }
+        form p+p{
+            margin-top: 1em;
+        }
+        label{
+            display: inline-block;
+            width: 90px;
+            text-align: right;
+        }
+        input, textarea{
+            font-family: Arial, Helvetica, sans-serif;
+            width: 300px;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+            border: 1px solid #999;
+        }
+        textarea{
+            vertical-align: top;
+            height: 5em;
+            resize: vertical;
+        }
+        .botao{
+            padding-left: 90px;
+        }
+        button{
+            margin-left: 0.5em;
+        }
+    </style>
+</head>
+<body>
+    <form action=""autocomplete="off" method="post" >
+        <p>
+            <label for="inome">Nome</label>
+            <input type="text" name="nome" id="inome">
+        </p>
+        <p>
+            <label for="iemail">Email</label>
+            <input type="text" name="email" id="iemail">
+        </p>
+        <p>
+            <label for="imensagem">Mensagem</label>
+            <textarea name="Mensagem" id="imensagem"></textarea>
+        </p>
+        <p class="botao">
+            <button type="submit"> Enviar</button>
+        </p>
+    </form>
+  
+
+
+
+
+
+
+
+
+
+
+    
+      
+</body>
