@@ -16,7 +16,7 @@
             </p>
             <p>
                 <label for="itelefone">Telefone</label>
-                <input type="tel" name="telefone" id="itelefone" pattern="^[0-9]{3}-[0-9]{3}[0-9]{3}$">
+                <input type="tel" name="telefone" id="itelefone" pattern="^[0-9]{3}-[0-9]{3}-[0-9]{3}$">
             </p>
             <p>
                 <label for="imedia">Média</label>
@@ -46,10 +46,51 @@
                 <input type="submit" value="Enviar">
                 <input type="reset" value="Limpar">
             </p>
-            <p>
-                
-            </p>
         </fieldset>
+        <fieldset>
+            <legend>Esportes favoritos</legend>
+            <input type="checkbox" name="ebas" id="ibas"><label for="ibas">Basquete</label><br>
+            <input type="checkbox" name="efut" id="ifut"><label for="ifut">Futebol</label><br>
+            <input type="checkbox" name="eten" id="iten"><label for="iten">Tenis</label>
+        </fieldset>
+        <fieldset>
+            <legend>Sexo</legend>
+            <input type="radio" name="Sexo" id="isexo"><label for="isexo">Masculino</label><br>
+            <input type="radio" name="Sexo" id="isexo1"><label for="isexo1">Femenino</label>
+        </fieldset>
+        <textarea name="ccam" id="campo">Digite aqui!</textarea>
+    </form>
+    <h2>Elementos Color, Range e File em HTML5</h2>
+    <h3>Capítulo 24!</h3>
+    <form action="cadastro.php" method="post">
+        <p>
+            <label for="icor">Cor</label>
+            <input type="color" name="color" id="icor">
+        </p>
+        <p>
+            <label for="inivel">Nível de Satisfação</label>
+            <input type="range" name="nivel" id="inivel">
+        </p>
+        <p>
+            <label for="iflie">Carregue uma imagem:</label>
+            <input type="file" name="ficheiro" id="ifile">
+        </p>
+    </form>
+    <h2>Select,e elemento datalist</h2>
+    <form action="cadastro.php" method="post">
+        <label for="esalime">Escolha os Alimentos:</label>
+         <select name="alimentos" id="ialimentos">
+            <optgroup label="Frutas">
+                <option value="Laranja">Laranja</option>
+                <option value="maca">Maça</option>
+                <option value="banana">Banana</option>
+            </optgroup>
+            <optgroup label="Legumes">
+                <option value="cenoura">Cenoura</option>
+                <option value="cebola">cebola</option>
+                <option value="pimenta">Pimenta</option>
+            </optgroup>
+         </select>
     </form>
 </body>
 </html>
