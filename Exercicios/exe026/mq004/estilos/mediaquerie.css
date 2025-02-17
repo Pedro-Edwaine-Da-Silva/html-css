@@ -43,17 +43,19 @@ Telas Grandes: acima 1200px
     /*Mídia para Pc*/
     body{
         background: black url(../imagens/back-pc.jpg) no-repeat;
+        background-size: cover;
     }
     #img_phone{display: none;}
-    #img_tablet{display: block;}
+    #img_tablet{display: none;}
     #img_print{display: none;}
-    #img_pc{display: none;}
+    #img_pc{display: block;}
     #img_tv{display: none;}
 }
 @media screen and (min-width: 1200px) {
     /*Mídia para Telas Grandes*/
     body{
         background: black url(../imagens/back-tv.jpg) no-repeat;
+        
     }
     #img_phone{display: none;}
     #img_tablet{display: none;}
